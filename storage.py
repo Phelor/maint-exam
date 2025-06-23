@@ -1,15 +1,17 @@
 from typing import List, Protocol
 import json
-
+import os
 from models import Task
 
-class StorageBackend(Protocol):
+class StorageBackend(Protocol): 
+    """protocole = interface"""
     def load_tasks(self) -> List[Task]:
         ...
     def save_tasks(self, tasks: List[Task]) -> None:
         ...
 
 class JsonStorageBackend:
+    """si le filename existe il le load ou sinon le crée"""
     def __init__(self, filename: str):
         self.filename = filename
 
