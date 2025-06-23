@@ -1,9 +1,9 @@
-import sys
+"""argparse, CLI lib"""
 import argparse
-from manager import TaskManager 
+from manager import TaskManager
 from storage import JsonStorageBackend
 
-def launch_cli():    
+def launch_cli():
     """Main entry point for the task CLI application."""
     storage = JsonStorageBackend("tasks.json")
     manager = TaskManager(storage)
