@@ -3,7 +3,6 @@ import json
 
 TASK_FILE = "tasks.json"
 
-
 class TaskManager:
     def __init__(self):
         """Initialize the TaskManager and load existing tasks from file."""
