@@ -22,11 +22,11 @@ class JsonStorageBackend:
         with open(self.filename, "r", encoding="utf-8") as f:
             try:
                 data = json.load(f)
-                return [Task.from_dict(t) for t in data]
+                return list(map(Task.from_dict, data))
             except Exception:
                 return []
 
     def save_tasks(self, tasks: List[Task]) -> None:
         """Json save storage"""
         with open(self.filename, "w", encoding="utf-8") as f:
-            json.dump([t.to_dict() for t in tasks], f, indent=2)
+            json.dump(list(map(lambda t: t.to_dict(), tasks)), f, indent=2)

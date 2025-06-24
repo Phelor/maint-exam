@@ -18,13 +18,13 @@ class TaskManager:
         self.storage.save_tasks(self.tasks)
         return task
 
-    def remove_task(self, task_id):
+    def remove_task(self, task_id: int) -> bool:
         """Remove the task with the specified ID."""
-        for idx, task in enumerate(self.tasks):
-            if task.id == task_id:
-                del self.tasks[idx]
-                self.storage.save_tasks(self.tasks)
-                return True
+        task = self._find_task_by_id(task_id)
+        if task:
+            self.tasks.remove(task)
+            self.storage.save_tasks(self.tasks)
+            return True
         return False
 
     def list_tasks(self) -> List[Task]:
@@ -34,5 +34,8 @@ class TaskManager:
     def find_tasks(self, keyword: str) -> List[Task]:
         """Find all tasks containing the keyword in their description."""
         return [t for t in self.tasks if keyword.lower() in t.description.lower()]
+    
+    def _find_task_by_id(self, task_id: int) -> Task | None:
+        return next((t for t in self.tasks if t.id == task_id), None)
 
 
