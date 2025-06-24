@@ -12,30 +12,29 @@ class TaskManager:
 
     def add_task(self, description: str) -> Task:
         """Add a new task with the given description."""
-        new_id = max([t.id for t in self.tasks], default=0) + 1
-        task = Task(id=new_id, description=description)
-        self.tasks.append(task)
-        self.storage.save_tasks(self.tasks)
-        return task
+        new_id = max((t.id for t in self.tasks), default=0) + 1
+        new_task = Task(id=new_id, description=description)
+        new_tasks = [*self.tasks, new_task]
+        self._update_tasks(new_tasks)
+        return new_task
 
     def remove_task(self, task_id: int) -> bool:
         """Remove the task with the specified ID."""
-        task = self._find_task_by_id(task_id)
-        if task:
-            self.tasks.remove(task)
-            self.storage.save_tasks(self.tasks)
+        new_tasks = [t for t in self.tasks if t.id != task_id]
+        if len(new_tasks) < len(self.tasks):
+            self._update_tasks(new_tasks)
             return True
         return False
+    
+    def _update_tasks(self, new_tasks: List[Task]) -> None:
+        self.tasks = new_tasks
+        self.storage.save_tasks(self.tasks)
 
     def list_tasks(self) -> List[Task]:
         """Return the list of all tasks."""
-        return self.tasks
+        return self.tasks[:]
 
     def find_tasks(self, keyword: str) -> List[Task]:
         """Find all tasks containing the keyword in their description."""
         return [t for t in self.tasks if keyword.lower() in t.description.lower()]
     
-    def _find_task_by_id(self, task_id: int) -> Task | None:
-        return next((t for t in self.tasks if t.id == task_id), None)
-
-
