@@ -1,10 +1,20 @@
-from storage import StorageBackend
+"""
+Manager it's like a controller for Task Control. 
+Working logical separated from interface and data structure
+"""
+from storage import StorageBackend, List
 from models import Task
-from storage import List
 
 TASK_FILE = "tasks.json"
 
 class TaskManager:
+    """
+    Main function : 
+        add_task(description)      -- Add new task
+        remove_task(task_id)       -- Delete Task with id
+        list_tasks()               -- return List of task
+        find_tasks(keyword)        -- Find task with keyword
+    """
     def __init__(self, storage: StorageBackend):
         """
         Initialize the TaskManager and load existing tasks from file. 
@@ -15,15 +25,15 @@ class TaskManager:
 
     def add_task(self, description: str) -> Task:
         """Add a new task with the given description."""
-        new_id = max((t.id for t in self.tasks), default=0) + 1
-        new_task = Task(id=new_id, description=description)
+        new_id = max((t.task_id for t in self.tasks), default=0) + 1
+        new_task = Task(task_id=new_id, description=description)
         new_tasks = [*self.tasks, new_task]
         self._update_tasks(new_tasks)
         return new_task
 
     def remove_task(self, task_id: int) -> bool:
         """Remove the task with the specified ID."""
-        new_tasks = [t for t in self.tasks if t.id != task_id]
+        new_tasks = [t for t in self.tasks if t.task_id != task_id]
         if len(new_tasks) < len(self.tasks):
             self._update_tasks(new_tasks)
             return True

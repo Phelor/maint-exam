@@ -112,8 +112,8 @@ def test_json_manager(tmp_path):
     assert len(loaded) == 2
     assert len(loaded_find) == 1
     assert loaded[0].description == "tortue1"
-    assert loaded[0].id == 1
-    assert loaded[1].id == 2
+    assert loaded[0].task_id == 1
+    assert loaded[1].task_id == 2
     assert os.path.exists(json_file)
 
 def test_json_corrupted(tmp_path):

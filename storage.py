@@ -1,3 +1,6 @@
+"""
+In charge of reading and writting in JSON, it's is only purpose
+"""
 from typing import List, Protocol
 import json
 import os

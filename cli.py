@@ -12,17 +12,30 @@ def launch_cli():
     handle_command(args, manager)
 
 def parse_args():
+    """Parsing argument chain"""
     parser = argparse.ArgumentParser(description="Task manager de fou là")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
-    subparsers.add_parser("add", help="Add new task").add_argument("description", type=str, help="Task description")
-    subparsers.add_parser("remove", help="Remove a task by ID").add_argument("id", type=int, help="Task ID")
-    subparsers.add_parser("list", help="List all tasks")
-    subparsers.add_parser("find", help="Find tasks by keyword").add_argument("keyword", type=str, help="Keyword")
+    (subparsers
+     .add_parser("add", help="Add new task")
+     .add_argument("description", type=str, help="Task description")
+    )
+    (subparsers
+     .add_parser("remove", help="Remove a task by ID")
+     .add_argument("id", type=int, help="Task ID")
+    )
+    (subparsers
+     .add_parser("list", help="List all tasks")
+    )
+    (subparsers
+     .add_parser("find", help="Find tasks by keyword")
+     .add_argument("keyword", type=str, help="Keyword")
+    )
 
     return parser.parse_args()
 
 def handle_command(args, manager: TaskManager):
+    """list of CLI command"""
     if args.command == "add":
         task = manager.add_task(args.description)
         print(f"Added task {task.id}: {task.description}")
