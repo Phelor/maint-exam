@@ -33,5 +33,9 @@ def handle_command(args, manager: TaskManager):
         for task in manager.list_tasks():
             print(f"{task.id}: {task.description}")
     elif args.command == "find":
-        for task in manager.find_tasks(args.keyword):
-            print(f"{task.id}: {task.description}")
+        found = manager.find_tasks(args.keyword)
+        if not found:
+            print("Aucune tâche")
+        else:
+            for task in found:
+                print(f"{task.id}: {task.description}")

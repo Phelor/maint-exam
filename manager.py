@@ -6,7 +6,10 @@ TASK_FILE = "tasks.json"
 
 class TaskManager:
     def __init__(self, storage: StorageBackend):
-        """Initialize the TaskManager and load existing tasks from file. StorageBackend load empty list or existing task.json"""
+        """
+        Initialize the TaskManager and load existing tasks from file. 
+        StorageBackend load empty list or existing task.json
+        """
         self.storage = storage
         self.tasks = self.storage.load_tasks()
 
@@ -25,7 +28,7 @@ class TaskManager:
             self._update_tasks(new_tasks)
             return True
         return False
-    
+
     def _update_tasks(self, new_tasks: List[Task]) -> None:
         self.tasks = new_tasks
         self.storage.save_tasks(self.tasks)
@@ -36,5 +39,4 @@ class TaskManager:
 
     def find_tasks(self, keyword: str) -> List[Task]:
         """Find all tasks containing the keyword in their description."""
-        return [t for t in self.tasks if keyword.lower() in t.description.lower()]
-    
+        return list(filter(lambda t: keyword.lower() in t.description.lower(), self.tasks))
